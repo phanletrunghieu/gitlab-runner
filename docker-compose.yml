@@ -1,20 +1,11 @@
 version: '3'
 services:
-  dind:
-    restart: always
-    privileged: true
-    volumes:
-      - /var/lib/docker
-    image: docker:17.09.0-ce-dind
-    command: 
-      - --storage-driver=overlay2
   runner:
     image: gitlab/gitlab-runner:alpine-v12.2.0
     restart: always
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./runner:/etc/gitlab-runner:Z
-    environment:
-      - DOCKER_HOST=tcp://dind:2375
 
   register-runner:
     restart: 'no'
